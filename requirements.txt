@@ -3,13 +3,13 @@ gym==0.25.0
 numpy==1.23.1
 
 # --------------------- Only available in linux ----------------------
-# cgroups==0.1.0
+cgroups==0.1.0
 
 # ----------------- Packages you are allowed to use ------------------
-# regex==2022.8.17
-# pandas==1.4.3
-# scikit-learn==1.1.2
-# tensorflow==2.9.1
+regex==2022.8.17
+pandas==1.4.3
+scikit-learn==1.1.2
+tensorflow==2.9.1
 
 # ------------------------------- Torch ------------------------------
 # --find-links https://download.pytorch.org/whl/torch_stable.html
