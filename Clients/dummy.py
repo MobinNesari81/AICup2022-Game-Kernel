@@ -1,6 +1,5 @@
 from os import makedirs
 from enum import Enum
-from math import *
 
 DEBUG = 0
 
@@ -74,20 +73,6 @@ class Map:
         self.grid = [MapTile() for _ in range(self.sight_range ** 2)]
 
 
-def write_logs_line(message) -> None:
-    fileName = 'text.txt'
-    with open(fileName, 'a') as f:
-        f.write(message)
-        f.write("\n")
-def write_logs_table(table) -> None:
-    fileName = 'text.txt'
-    with open(fileName, 'a') as f:
-        for row in table:
-            f.write(str(row))
-            f.write('\n')
-        f.write('-' * 20)
-        f.write('\n')
-
 class GameState:
     def __init__(self) -> None:
         self.rounds = int(input())
@@ -101,7 +86,6 @@ class GameState:
         self.map.gold_count = int(input())
         self.map.sight_range = int(input())  # equivalent to (2r+1)
         self.map.set_grid_size()
-        self.ai = AI(self.map.width, self.map.height)
         self.debug_log = ''
 
     def set_info(self) -> None:
@@ -143,56 +127,9 @@ class GameState:
     def get_action(self) -> Action:
         # write your code here
         # return the action value
-        self.ai.recon(self.agent_id, self.location, self.map)
-        write_logs_table(self.ai.plot)
-        # self.write_logs(self.map.__str__())
         return Action.MOVE_DOWN
 
 
-class AI:
-    def __init__(self, map_width: int, map_height: int) -> None:
-        self.enemy_agents = None
-        self.our_agents = None
-        self.plot = [[-2 for _ in range(map_width)] for _ in range(map_height)]
-
-    def recon(self, agent_id: int, location: tuple, recon_map: Map) -> None:
-        for tile in recon_map.grid:
-            if tile.type not in [MapType.OUT_OF_MAP, MapType.OUT_OF_SIGHT]:
-                if tile.type == MapType.AGENT:
-                    data = str(tile.data)
-                    for row in range(len(self.plot)):
-                        if data in self.plot[row]:
-                            self.plot[row][self.plot[row].index(data)] = -2
-                    self.plot[tile.coordinates[0]][tile.coordinates[1]] = data
-                elif tile.type == MapType.GOLD:
-                    self.plot[tile.coordinates[0]][tile.coordinates[1]] = 4
-                elif tile.type == MapType.EMPTY:
-                    self.plot[tile.coordinates[0]][tile.coordinates[1]] = -1
-                elif tile.type == MapType.FOG:
-                    self.plot[tile.coordinates[0]][tile.coordinates[1]] = 5
-                elif tile.type == MapType.TREASURY:
-                    self.plot[tile.coordinates[0]][tile.coordinates[1]] = 7
-                elif tile.type == MapType.WALL:
-                    self.plot[tile.coordinates[0]][tile.coordinates[1]] = 6
-                self.plot[location[0]][location[1]] = agent_id
-
-    def set_agents(self, our_agents: list, enemy_agents: list):
-        self.our_agents = our_agents
-        self.enemy_agents = enemy_agents
-
-    def distance(self, pos1: tuple, pos2: tuple) -> float:
-        return sqrt(pow(pos1[0] - pos2[0], 2) + pow(pos1[1] - pos2[1], 2))
-
-    UNKNOWN = -2
-    EMPTY = -1
-    AGENT0 = 0
-    AGENT1 = 1
-    AGENT2 = 2
-    AGENT3 = 3
-    GOLD = 4
-    FOG = 5
-    WALL = 6
-    TREASURY = 7
 
 if __name__ == '__main__':
     game_state = GameState()

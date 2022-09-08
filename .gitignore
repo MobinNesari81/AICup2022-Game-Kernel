@@ -161,3 +161,7 @@ Clients/*
 !Clients/*.cpp
 !Clients/*.java
 !Clients/*.cs
+
+
+# Personal Log
+text.txt
